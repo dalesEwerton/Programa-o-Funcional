@@ -1,4 +1,4 @@
-module MultisetList ()
+module MultisetMap ()
  where
 
 {- 
@@ -6,49 +6,37 @@ module MultisetList ()
  - permite duplicadas. Entretanto, as duplicatas são armazenadas como a quantidade de 
  - ocorréncias do mesmo elemento no multi-conjunto. Exemplo, a coleção {a,b,c,c,c,b} poderia 
  - ser representada como sendo {(a,1), (b,2), (c,3)}. A ideia de multi-conjunto pode ser 
- - implementada de diversas formas. Uma delas é usando a implementacao de Data.List, onde 
- - cada elemento da lista consiste do dado em si e sua quantidade (um par). 
- - Eh recomendavel que voce consulte a documentacao de Data.List
+ - implementada de diversas formas. Uma delas é usando a implementacao de Data.Map, onde 
+ - cada elemento da lista consiste do dado em si mapeado para sua quantidade. 
+ - Eh recomendavel que voce consulte a documentacao de Data.Map
  -}
+import qualified Data.Map as Map
 import qualified Data.List as List
-
-
 {-
  - Insere um elemento na estrutura. Caso o elemento ja existe, sua quantidade na estrutura sera incrementada.
  -}
-insert elem [] = [(elem,1)]
-insert elem bag
-    | fst (head bag) == elem = (elem, (snd (head bag)) + 1) : tail bag
-    | otherwise = (head bag) : insert elem (tail bag)
 
+insert elem bag
+    | bag == Map.empty = Map.fromList [(elem,1)]
+    | isElement = Map.adjust (1 +) elem (bag)
+    | otherwise = Map.insert elem 1 (bag)
+    where isElement = List.elem elem (Map.keys (bag))
 {-
 - Remove um elemento da estrutura, levando em consideracao a manipulacao de sua quantidade na estrutura. 
 - Caso a quantidade atinja 0 (ou menos), o elemento deve realmente ser removido da estrutura
 -}
-remove elem bag = remove elem [] = [(elem,1)]
-remove elem bag
-    | fst (head bag) == elem = if ((snd (head bag)) - 1) == 0 
-                               then tail bag
-                               else (elem, (snd (head bag)) - 1) : tail bag
-    | otherwise = (head bag) : remove elem (tail bag)
+remove elem bag = undefined
 
 {-
  - Busca um elemento na estrutura retornando sua quantidade. Caso o elemento nao exista, retorna 0 como a quantidade.
 -}
-search elem [] = 0
-search elem bag
-    | fst (head bag) == elem = snd (head bag)
-    | otherwise = search elem (tail bag)
+search elem bag = undefined
+
 {-
  - Faz a uniao deste Bag com otherBag. A uniao consiste em ter os elementos dos dois Bags com suas maiores quantidades.
  - Por exemplo, A = {(a,1),(c,3)}, B = {(b,2),(c,1)}. A.union(B) deixa A = {(a,1),(c,3),(b,2)}
 -}
-
-union bag1 [] = bag1
-union bag1 (x:xs)
-    | (search (fst x) bag1) == 0 = union (bag1 ++ [x]) xs
-    | otherwise = union (setQtd bag1 (fst x) newQtd) xs
-        where newQtd = max (search (fst x) bag1) (snd x)
+union bag1 bag2 = undefined
 
 {-
  - Faz a intersecao deste Bag com otherBag. A intersecao consiste em ter os elementos que estao em ambos os bags com suas 
@@ -81,5 +69,3 @@ sum bag1 bag2 = undefined
  - Retorna a quantidade total de elementos no Bag
 -}
 size bag = undefined
-
-multiset-list.hs
